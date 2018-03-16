@@ -5,18 +5,18 @@ const { auth } = require('./resolvers/auth')
 
 const resolvers = {
   Query: {
-    user(parent, args, ctx, info) {
+    user(parent, { id }, ctx, info) {
       return ctx.db.query.user({ where: { id } }, info)
     },
-    product(parent, args, ctx, info) {
+    product(parent, { id }, ctx, info) {
       return ctx.db.query.product({ where: { id } }, info)
     },
-    allProducts(parent, { }, ctx, info) {
+    allProducts(parent, {}, ctx, info) {
       return ctx.db.query.products({}, info)
     },
-    allUsers(parent, { }, ctx, info) {
+    allUsers(parent, {}, ctx, info) {
       return ctx.db.query.users({}, info)
-    },
+    }
   },
   
   Mutation: {
@@ -30,21 +30,29 @@ const resolvers = {
         info,
       )
     },
-    createProduct(parent, { color, price, desc, imgURL }, ctx, info) {
+    createProduct(parent, { name, price, desc, imgURL }, ctx, info) {
       return ctx.db.mutation.createProduct(
-        { data: { color, price, desc, imgURL } },
+        { data: { name, price, desc, imgURL } },
         info,
       )
     },
-    updateProduct(parent, { color, price, desc, imgURL }, ctx, info) {
+    updateProduct(parent, { id, name, price, desc, imgURL }, ctx, info) {
       return ctx.db.mutation.updateProduct(
         {
-          data: { color, price, desc, imgURL },
+          data: { name, price, desc, imgURL },
           where: { id }
         },
         info,
       )
     },
+    deleteProduct(parent, { id }, ctx, info) {
+      return ctx.db.mutation.deleteProduct(
+        {
+          where: { id }
+        },
+        info,
+      )
+    }
   },
 }
 

@@ -7,21 +7,36 @@ export class ModalButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false
+      open: false,
+      primary: true,
+      secondary: false,
+    }
+  }
+  componentDidMount () {
+    if(this.props.color){
+      if(this.props.color === 'secondary')
+        this.setState({
+          primary: false,
+          secondary: true
+        })
     }
   }
   render() {
     const {label, display} = this.props
     return (
-      <div>
-        <RaisedButton secondary={true} label={label} onClick={e => this.setState({ open: !this.state.open })} />
+      <span>
+        <RaisedButton primary={this.state.primary}
+                      secondary={this.state.secondary}
+                      label={label}
+                      onClick={e => this.setState({ open: !this.state.open })}
+        />
         <Dialog
           actions={<RaisedButton label='Close' onClick={e => this.setState({open: !this.state.open})}/>}
           open={this.state.open}
           onRequestClose={e => this.setState({open: !this.state.open})}>
           <div>{display}</div>
         </Dialog>
-      </div>
+      </span>
     )
   }
 }
